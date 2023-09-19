@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthProvider/AuthProvider';
 
 const Navbar = () => {
+    const { userLoggedIn, logout } = useContext(AuthContext);
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        if (userLoggedIn) {
+            const userData = JSON.parse(localStorage.getItem('ecom_credentials'));
+            setUser(userData);
+        }
+    }, [userLoggedIn]);
 
     const menu = <>
-        <input type="text" placeholder="Search" className="input input-bordered input-primary w-full max-w-xs text-primary" />
+        <Link to='/'> <button className='btn btn-ghost'>Home</button></Link>
+        <Link to='/cart'> <button className='btn btn-ghost'>Cart</button></Link>
     </>;
 
     return (
-        <div className="navbar bg-base-100 px-10">
+        <div className="navbar bg-base-100 px-10 py-6">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -17,7 +29,7 @@ const Navbar = () => {
                         {menu}
                     </ul>
                 </div>
-                <a className="normal-case text-xl">E-commerce</a>
+                <a className="normal-case text-3xl font-semibold text-primary">E-commerce</a>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -25,7 +37,17 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Sign In</a>
+                {/* <input type="text" placeholder="Search" className="input input-bordered input-primary border-2 w-full text-primary mr-2" /> */}
+
+                {
+                    userLoggedIn ?
+                        <>
+                            <span className='mr-4'>{user?.email}</span>
+                            <button onClick={logout} className="btn btn-error">Logout</button>
+                        </>
+                        :
+                        <Link to='/login'> <button className="btn btn-primary">Login</button></Link>
+                }
             </div>
         </div>
     );
