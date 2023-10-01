@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { order_url } from '../api/api_url';
+import useTitle from '../hooks/useTitle';
 
 const Cart = () => {
     const [cart, setCart] = useState([]);
@@ -15,6 +16,8 @@ const Cart = () => {
     const navigate = useNavigate();
     const [showTrx, setShowTrx] = useState(false);
     const [trxId, setTrxId] = useState('');
+    useTitle('Cart');
+    const [paymentMethodState, setPaymentMethodState] = useState('cash');
 
     const cartUpdater = () => {
         setUpdateCounts(updateCounts + 1);
@@ -34,9 +37,14 @@ const Cart = () => {
 
         if (paymentMethod === 'bkash' || paymentMethod === 'nagad') {
             setTrxId(form.transactionId.value);
+            setPaymentMethodState(paymentMethod);
+        }
+        else {
+            setTrxId('');
+            setPaymentMethodState('cash');
         }
 
-        console.log(trxId);
+        console.log(paymentMethod);
 
 
         if (userLoggedIn) {
@@ -49,7 +57,7 @@ const Cart = () => {
                     userPhone: user?.phone,
                     receiverPhone: phone,
                     receiverAddress: address,
-                    paymentMethod: paymentMethod,
+                    paymentMethod: paymentMethodState,
                     transactionId: trxId,
                     orderList: cart,
                     totalPrice: total
@@ -140,7 +148,7 @@ const Cart = () => {
                         </div>
                     </section>
                     :
-                    <div className='text-center text-lg mt-10'>You haven't added any product on your Cart</div>
+                    <div className='text-center text-lg mt-10 h-[90vh]'>You haven't added any product on your Cart</div>
             }
             <dialog id="confirm_modal" className="modal">
                 <div className="modal-box">

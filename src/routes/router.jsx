@@ -5,6 +5,13 @@ import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
 import Register from "../pages/register";
 import Login from "../pages/Login";
+import About from "../pages/About";
+import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Orders from "../pages/Orders";
+import AddProduct from "../pages/AddProduct";
+import AllProducts from "../pages/AllProducts";
+import Invoice from "../pages/Invoice";
 
 const router = createBrowserRouter([
     {
@@ -23,9 +30,29 @@ const router = createBrowserRouter([
             },
             {
                 path: '/login', element: <Login />
-            }
+            },
+            {
+                path: '/about', element: <About />
+            },
         ]
-    }
+    },
+    {
+        path: '/dash-dashboard', element: <PrivateRoute><DashboardLayout /></PrivateRoute>, children: [
+            {
+                path: '/dash-dashboard', element: <PrivateRoute><Orders /></PrivateRoute>
+            },
+            {
+                path: '/dash-dashboard/add-product', element: <PrivateRoute><AddProduct /></PrivateRoute>
+            },
+            {
+                path: '/dash-dashboard/all-product', element: <PrivateRoute><AllProducts /></PrivateRoute>
+            },
+
+        ]
+    },
+    {
+        path: '/invoice', element: <Invoice />,
+    },
 ]);
 
 export default router;

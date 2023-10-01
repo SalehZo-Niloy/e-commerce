@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import { specific_product } from '../api/api_url';
 import axios from 'axios';
 import { addToCart } from '../utils/commonFunctions';
+import useTitle from '../hooks/useTitle';
 
 const ProductDetails = () => {
     const params = useParams();
     const productId = params?.id;
     const [productDetails, setProductDetails] = useState({});
+    useTitle('Product Details');
 
     console.log(specific_product, productId);
 
@@ -39,7 +41,19 @@ const ProductDetails = () => {
                     <h4 className='text-xl text-white font-semibold'>Description:</h4>
                     <p className='mt-4'>{productDetails?.description}</p>
                     <h4 className='text-xl text-white font-semibold mt-10'>Price: {productDetails?.price}</h4>
-                    <button onClick={() => addToCart(productDetails?._id, productDetails?.price)} className="btn btn-primary mt-10">Add To Cart</button>
+                    {
+                        productDetails?.inStock ?
+                            <h4 className='text-xl text-success font-semibold mt-10'>Availability : In Stock</h4>
+                            :
+                            <h4 className='text-xl text-error font-semibold mt-10'>Availibility : Out of Stock</h4>
+
+                    }
+                    {
+                        productDetails?.inStock ?
+                            <button onClick={() => addToCart(productDetails?._id, productDetails?.price)} className="btn btn-primary mt-10">Add To Cart</button>
+                            :
+                            <button onClick={() => addToCart(productDetails?._id, productDetails?.price)} disabled className="btn btn-primary mt-10">Add To Cart</button>
+                    }
                 </div>
             </section>
         </>

@@ -29,6 +29,7 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         localStorage.removeItem("ecom_credentials");
+        localStorage.removeItem("ecom-cart");
         setUserLoggedIn(false);
     };
 

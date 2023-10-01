@@ -4,9 +4,11 @@ import { toast } from 'react-hot-toast';
 import { login_url } from '../api/api_url';
 import { AuthContext } from '../context/AuthProvider/AuthProvider';
 import { Link } from 'react-router-dom';
+import useTitle from '../hooks/useTitle';
 
 const Login = () => {
     const { saveLoginCredentials } = useContext(AuthContext);
+    useTitle('Login');
 
     const handleSubmit = async (e) => {
         e.preventDefault();

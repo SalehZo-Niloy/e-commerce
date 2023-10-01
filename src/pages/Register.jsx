@@ -3,8 +3,10 @@ import React from 'react';
 import { toast } from 'react-hot-toast';
 import { register_url } from '../api/api_url';
 import { Link } from 'react-router-dom';
+import useTitle from '../hooks/useTitle';
 
 const Register = () => {
+    useTitle('Register');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
