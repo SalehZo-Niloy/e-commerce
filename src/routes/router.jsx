@@ -3,7 +3,6 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
-import Register from "../pages/register";
 import Login from "../pages/Login";
 import About from "../pages/About";
 import PrivateRoute from "./PrivateRoute";
@@ -12,6 +11,7 @@ import Orders from "../pages/Orders";
 import AddProduct from "../pages/AddProduct";
 import AllProducts from "../pages/AllProducts";
 import Invoice from "../pages/Invoice";
+import Register from "../pages/Register";
 
 const router = createBrowserRouter([
     {
