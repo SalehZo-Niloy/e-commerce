@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import CartCard from '../components/Card/cartCard';
+import CartCard from '../components/Card/CartCard';
 import { removeFromCart } from '../utils/commonFunctions';
 import { AuthContext } from '../context/AuthProvider/AuthProvider';
 import { toast } from 'react-hot-toast';
