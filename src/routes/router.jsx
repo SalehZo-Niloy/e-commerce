@@ -12,6 +12,7 @@ import AddProduct from "../pages/AddProduct";
 import AllProducts from "../pages/AllProducts";
 import Invoice from "../pages/Invoice";
 import Register from "../pages/Register";
+import InvoiceList from "../pages/InvoiceList";
 
 const router = createBrowserRouter([
     {
@@ -47,11 +48,13 @@ const router = createBrowserRouter([
             {
                 path: '/dash-dashboard/all-product', element: <PrivateRoute><AllProducts /></PrivateRoute>
             },
-
+            {
+                path: '/dash-dashboard/invoice-list', element: <PrivateRoute><InvoiceList /></PrivateRoute>,
+            },
         ]
     },
     {
-        path: '/invoice', element: <Invoice />,
+        path: '/invoice/:id', element: <Invoice />,
     },
 ]);
 

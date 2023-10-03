@@ -1,7 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../assets/logo1.png'
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { specificInvoice_url } from '../api/api_url';
+import InvoiceTableCard from '../components/Card/InvoiceTableCard';
 
 const Invoice = () => {
+    const params = useParams();
+    const invoiceId = params?.id;
+    const [invoice, setInvoice] = useState({});
+    const [formattedDate, setFormatedDate] = useState();
+
+    useEffect(() => {
+        fetchInvoiceData();
+    }, [invoiceId]);
+
+    const fetchInvoiceData = async () => {
+        try {
+            const res = await axios.get(`${specificInvoice_url}${invoiceId}`);
+
+            console.log(res);
+            if (res) {
+                setInvoice(res?.data);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        const isoDateString = invoice?.createdAt;
+        const dateObject = new Date(isoDateString);
+
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        const formattedDate = dateObject.toLocaleDateString('en-US', options);
+
+        setFormatedDate(formattedDate);
+    }, [invoice]);
+
     return (
         <div className="bg-black min-h-screen text-black font-sans overflow-x-hidden flex justify-center items-center">
             <div className="container mx-auto p-8">
@@ -17,13 +54,15 @@ const Invoice = () => {
                             </div>
                             <div className="text-right">
                                 <p className="text-4xl font-semibold">INVOICE</p>
-                                <p className="text-sm">Invoice #3488</p>
-                                <p className="text-sm">Date: 08/Jan/2022</p>
+                                <p className="text-sm">Invoice : {invoice?._id}</p>
+                                <p className="text-sm">Date: {formattedDate ? formattedDate : undefined}</p>
                             </div>
                         </div>
                         <div className="mt-6">
                             <p className="font-semibold">Bill To</p>
-                            <p className="font-bold text-lg">Alex Deo</p>
+                            <p className="font-bold text-lg">{invoice?.username}</p>
+                            <p className="">Phone : {invoice?.receiverPhone}</p>
+                            <p className="">Address : {invoice?.receiverAddress}</p>
                         </div>
                     </div>
                     <div className="bg-primary text-white p-4">
@@ -42,22 +81,16 @@ const Invoice = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="p-4">
-                        <div className="flex">
-                            <div className="w-3/5">
-                                <p className="font-semibold">Web Design</p>
+                    {
+                        invoice?.orderList ?
+                            <div>
+                                {
+                                    invoice.orderList.map(item => <InvoiceTableCard item={item} key={item?._id}></InvoiceTableCard>)
+                                }
                             </div>
-                            <div className="w-1/5 text-center">
-                                <p>$350</p>
-                            </div>
-                            <div className="w-1/5 text-center">
-                                <p>2</p>
-                            </div>
-                            <div className="w-1/5 text-right">
-                                <p>$700.00</p>
-                            </div>
-                        </div>
-                    </div>
+                            :
+                            undefined
+                    }
                     <div className="p-4 mt-6">
                         <div className="flex justify-between">
                             <div>
@@ -66,7 +99,7 @@ const Invoice = () => {
                             <div className="text-right">
                                 <p className="font-semibold">
                                     <span>TOTAL </span>
-                                    <span> $700</span>
+                                    <span> {invoice?.totalPrice}</span>
                                 </p>
                                 <p>
                                     {/* Tax Vat 18% */}
@@ -77,7 +110,7 @@ const Invoice = () => {
                                 </p>
                                 <p className="font-semibold">
                                     <span>Grand Total </span>
-                                    <span> $700.0</span>
+                                    <span> {invoice?.totalPrice}</span>
                                 </p>
                             </div>
                         </div>

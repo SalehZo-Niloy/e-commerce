@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { allOrder_url, completeOrder_url } from '../api/api_url';
+import { addInvoice_url, allOrder_url, completeOrder_url } from '../api/api_url';
 import OrderCard from '../components/Card/OrderCard';
 
 const Orders = () => {
@@ -25,10 +25,27 @@ const Orders = () => {
     const completeOrder = async (_id) => {
         try {
             const res = await axios.put(`${completeOrder_url}${_id}`)
+            console.log(res);
             if (res) {
-                const orderCompleted = res?.data;
-                if (orderCompleted) {
+                const orderData = res?.data;
+                if (orderData) {
                     fetchOrders();
+                    const invoice = {
+                        username: orderData?.username,
+                        userPhone: orderData?.userPhone,
+                        userEmail: orderData?.userEmail,
+                        transactionId: orderData?.transactionId,
+                        paymentMethod: orderData?.paymentMethod,
+                        totalPrice: orderData?.totalPrice,
+                        receiverPhone: orderData?.receiverPhone,
+                        receiverAddress: orderData?.receiverAddress,
+                        orderList: orderData?.orderList,
+                        orderCompleted: orderData?.orderCompleted,
+                    }
+                    const res = await axios.post(`${addInvoice_url}`, invoice);
+                    if (res) {
+                        return;
+                    }
                 }
             }
         } catch (error) {

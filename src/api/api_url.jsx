@@ -15,3 +15,6 @@ export const inStock_url = `${server_url}/inStock?id=`;
 export const outOfStock_url = `${server_url}/outOfStock?id=`;
 export const addProduct_url = `${server_url}/addProduct`;
 export const deleteProduct_url = `${server_url}/deleteProduct/`;
+export const addInvoice_url = `${server_url}/addInvoice`;
+export const getInvoice_url = `${server_url}/invoice`;
+export const specificInvoice_url = `${server_url}/invoice/`;
